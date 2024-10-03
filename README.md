@@ -1,6 +1,6 @@
 ## Project Structure
 
-├── public/
+```├── public/
 ├── src/
 │ ├── components/
 │ │ ├── Header.js
@@ -20,3 +20,4 @@
 └── package.json
 
 This app uses useReducer hook for state management.
+```
