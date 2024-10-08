@@ -1,6 +1,6 @@
 import Main from "./Main";
 import Header from "./Header";
-import { useEffect, useReducer } from "react";
+import { createContext, useContext, useEffect, useReducer } from "react";
 import Loader from "./Loader";
 import Error from "./Error";
 import StartScreen from "./StartScreen";
@@ -20,6 +20,47 @@ const initialState = {
   secondsRemaining: null,
 };
 const seconds = 30;
+const QuizContext = createContext();
+export function QuizProvider({ children }) {
+  const [
+    { questions, status, index, answer, points, highScore, secondsRemaining },
+    dispatch,
+  ] = useReducer(reducer, initialState);
+  const totalPoints = questions?.reduce((prev, cur) => prev + cur.points, 0);
+  const numQuestions = questions?.length;
+  useEffect(
+    function () {
+      fetch(`http://localhost:4000/questions`)
+        .then((res) => res.json())
+        .then((data) => dispatch({ type: "dataRecieved", payload: data }))
+        .catch((err) => dispatch({ type: "dataFailed" }));
+    },
+    [dispatch]
+  );
+  return (
+    <QuizContext.Provider
+      value={{
+        questions,
+        status,
+        index,
+        answer,
+        points,
+        highScore,
+        secondsRemaining,
+        totalPoints,
+        numQuestions,
+        dispatch,
+      }}
+    >
+      {children}
+    </QuizContext.Provider>
+  );
+}
+export function useQuiz() {
+  const context = useContext(QuizContext);
+  if (context === undefined) throw new Error("This is shit");
+  return context;
+}
 const reducer = function (state, action) {
   switch (action.type) {
     case "dataRecieved":
@@ -77,60 +118,26 @@ const reducer = function (state, action) {
   }
 };
 export default function App() {
-  const [
-    { questions, status, index, answer, points, highScore, secondsRemaining },
-    dispatch,
-  ] = useReducer(reducer, initialState);
-  const totalPoints = questions?.reduce((prev, cur) => prev + cur.points, 0);
-  const numQuestions = questions?.length;
-  useEffect(function () {
-    fetch(`http://localhost:4000/questions`)
-      .then((res) => res.json())
-      .then((data) => dispatch({ type: "dataRecieved", payload: data }))
-      .catch((err) => dispatch({ type: "dataFailed" }));
-  }, []);
+  const { status } = useQuiz();
+
   return (
     <div className="app">
       <Header />
       <Main>
         {status === "loading" && <Loader />}
         {status === "error" && <Error />}
-        {status === "ready" && (
-          <StartScreen numQuestions={numQuestions} dispatch={dispatch} />
-        )}
+        {status === "ready" && <StartScreen />}
         {status === "active" && (
           <>
-            <Progress
-              points={points}
-              index={index}
-              numQuestions={numQuestions}
-              totalPoints={totalPoints}
-              answer={answer}
-            />
-            <Question
-              question={questions[index]}
-              dispatch={dispatch}
-              answer={answer}
-            />
+            <Progress />
+            <Question />
             <Footer>
-              <Timer dispatch={dispatch} secondsRemaining={secondsRemaining} />
-              <NextButton
-                dispatch={dispatch}
-                answer={answer}
-                numQuestions={numQuestions}
-                index={index}
-              />
+              <Timer />
+              <NextButton />
             </Footer>
           </>
         )}
-        {status === "finished" && (
-          <FinishScreen
-            points={points}
-            totalPoints={totalPoints}
-            highScore={highScore}
-            dispatch={dispatch}
-          />
-        )}
+        {status === "finished" && <FinishScreen />}
       </Main>
     </div>
   );
