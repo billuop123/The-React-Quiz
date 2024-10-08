@@ -1,10 +1,13 @@
+import { useQuiz } from "./App";
 import Option from "./Option";
-function Question({ question, dispatch, answer }) {
+function Question() {
+  const { questions, index } = useQuiz();
+  const question = questions.at(index);
   if (!question) return null;
   return (
     <div>
       <h4>{question.question}</h4>
-      <Option question={question} dispatch={dispatch} answer={answer} />;
+      <Option question={question} />;
     </div>
   );
 }

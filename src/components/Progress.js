@@ -1,4 +1,7 @@
-function Progress({ points, index, numQuestions, totalPoints, answer }) {
+import { useQuiz } from "./App";
+
+function Progress() {
+  const { points, index, numQuestions, totalPoints, answer } = useQuiz();
   return (
     <header className="progress">
       <progress
