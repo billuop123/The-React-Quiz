@@ -142,3 +142,4 @@ export default function App() {
     </div>
   );
 }
+//refactored using context api and context api

@@ -26,3 +26,4 @@ function Option({ question }) {
 }
 
 export default Option;
+//refactored using context api and context api

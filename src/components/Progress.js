@@ -21,3 +21,4 @@ function Progress() {
 }
 
 export default Progress;
+//refactored using context api and context api

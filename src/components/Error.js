@@ -7,3 +7,4 @@ function Error() {
 }
 
 export default Error;
+//refactored using context api and context api

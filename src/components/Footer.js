@@ -3,3 +3,4 @@ function Footer({ children }) {
 }
 
 export default Footer;
+//refactored using context api and context api

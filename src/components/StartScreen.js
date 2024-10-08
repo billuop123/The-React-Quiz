@@ -17,3 +17,4 @@ function StartScreen() {
 }
 
 export default StartScreen;
+//refactored using context api and context api

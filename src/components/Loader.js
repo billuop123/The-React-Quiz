@@ -6,3 +6,4 @@ export default function Loader() {
     </div>
   );
 }
+//refactored using context api and context api

@@ -86,3 +86,4 @@ function DateCounter() {
   );
 }
 export default DateCounter;
+//refactored using context api and context api

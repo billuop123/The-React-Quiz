@@ -21,3 +21,4 @@ function FinishScreen() {
 }
 
 export default FinishScreen;
+//refactored using context api and context api

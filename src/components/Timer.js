@@ -24,3 +24,4 @@ function Timer() {
 }
 
 export default Timer;
+//refactored using context api and context api

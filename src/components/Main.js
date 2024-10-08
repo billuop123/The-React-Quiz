@@ -3,3 +3,4 @@ function Main({ children }) {
 }
 
 export default Main;
+//refactored using context api and context api
